@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../core/models/restaurant.dart';
+import '../../core/providers/restaurant_providers.dart';
 import '../../core/services/location_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -12,14 +14,14 @@ import 'map_filters.dart';
 import 'widgets/restaurant_map_sheet.dart';
 import 'widgets/restaurant_marker.dart';
 
-class MapScreen extends StatefulWidget {
+class MapScreen extends ConsumerStatefulWidget {
   const MapScreen({super.key});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  ConsumerState<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
+class _MapScreenState extends ConsumerState<MapScreen> with TickerProviderStateMixin {
   final MapController _mapController = MapController();
 
   LatLng _userPosition = kTokyoFallback;
@@ -29,10 +31,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   MapFilter _activeFilter = MapFilter.all;
   String? _selectedRestaurantId;
 
-  List<Restaurant> get _allRestaurants => MockRestaurants.all;
-
-  List<Restaurant> get _visibleRestaurants =>
-      applyMapFilter(_allRestaurants, _activeFilter);
+  List<Restaurant> get _visibleRestaurants {
+    final nearby = ref.read(nearbyRestaurantsProvider).valueOrNull ?? [];
+    return applyMapFilter(nearby, _activeFilter);
+  }
 
   @override
   void initState() {
@@ -48,6 +50,12 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       _locationIsReal = result.isReal;
       _isLoadingLocation = false;
     });
+
+    ref.read(nearbyParamsProvider.notifier).state = NearbyParams(
+      position: result.position,
+      radiusM: 2000,
+      filter: _activeFilter == MapFilter.all ? null : _activeFilter.filterKey,
+    );
 
     if (result.isReal) {
       _animateTo(result.position, zoom: 15);
@@ -258,7 +266,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        '${_visibleRestaurants.length} restaurants near you',
+                        '${_visibleRestaurants.length} ${_visibleRestaurants.length == 1 ? 'restaurant' : 'restaurants'} near you',
                         style: AppTextStyles.labelMedium,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -298,7 +306,14 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
             return Padding(
               padding: const EdgeInsets.only(right: 8),
               child: GestureDetector(
-                onTap: () => setState(() => _activeFilter = filter),
+                onTap: () {
+                  setState(() => _activeFilter = filter);
+                  ref.read(nearbyParamsProvider.notifier).state = NearbyParams(
+                    position: _userPosition,
+                    radiusM: 2000,
+                    filter: filter.filterKey,
+                  );
+                },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),

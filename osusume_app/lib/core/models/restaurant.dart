@@ -1,4 +1,5 @@
 import 'package:latlong2/latlong.dart';
+import 'remote/restaurant_photo_model.dart';
 
 class Restaurant {
   final String id;
@@ -13,6 +14,7 @@ class Restaurant {
   final double distanceKm;
   final bool isOpen;
   final String? imageUrl;
+  final List<RestaurantPhoto> photos;
   final ForeignerFactors foreignerFactors;
   final String? description;
   final List<String> tags;
@@ -34,6 +36,7 @@ class Restaurant {
     required this.foreignerFactors,
     required this.location,
     this.imageUrl,
+    this.photos = const [],
     this.description,
     this.tags = const [],
     this.recommendationReason,

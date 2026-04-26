@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/models/restaurant.dart';
+import '../../core/providers/restaurant_providers.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../shared/widgets/restaurant_card.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _scrollController = ScrollController();
   bool _showStickyHeader = false;
 
@@ -43,21 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: _buildSectionHeader('Near you now', onSeeAll: () {})),
           SliverToBoxAdapter(child: _buildNearbyCarousel()),
           SliverToBoxAdapter(child: _buildSectionHeader('Popular in Tokyo')),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, i) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: RestaurantCard(
-                    restaurant: MockRestaurants.all[i % MockRestaurants.all.length],
-                    horizontal: true,
-                  ),
-                ),
-                childCount: 5,
-              ),
-            ),
-          ),
+          _buildPopularList(),
         ],
       ),
     );
@@ -180,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
         label: 'Book',
         sublabel: 'a table',
         color: const Color(0xFF059669),
-        onTap: () => context.push('/reserve/${MockRestaurants.all.first.id}'),
+        onTap: () => context.push('/reserve/1'),
       ),
       _QuickAction(
         icon: Icons.map_rounded,
@@ -294,22 +281,67 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildNearbyCarousel() {
-    return SizedBox(
-      height: 270,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: MockRestaurants.all.length,
-        itemBuilder: (context, i) {
-          return Padding(
-            padding: const EdgeInsets.only(right: 14),
-            child: SizedBox(
-              width: 220,
-              child: RestaurantCard(restaurant: MockRestaurants.all[i]),
-            ),
-          );
-        },
+    final nearby = ref.watch(nearbyRestaurantsProvider);
+    return nearby.when(
+      loading: () => const SizedBox(
+        height: 270,
+        child: Center(child: CircularProgressIndicator()),
       ),
+      error: (_, __) => const SizedBox(
+        height: 270,
+        child: Center(child: Text('Could not load restaurants')),
+      ),
+      data: (restaurants) {
+        if (restaurants.isEmpty) {
+          return const SizedBox(
+            height: 270,
+            child: Center(child: Text('No restaurants nearby')),
+          );
+        }
+        return SizedBox(
+          height: 270,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: restaurants.length,
+            itemBuilder: (context, i) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 14),
+                child: SizedBox(
+                  width: 220,
+                  child: RestaurantCard(restaurant: restaurants[i]),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPopularList() {
+    final nearby = ref.watch(nearbyRestaurantsProvider);
+    return nearby.when(
+      loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+      error: (_, __) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+      data: (restaurants) {
+        final popular = (restaurants.toList()
+              ..sort((a, b) => b.rating.compareTo(a.rating)))
+            .take(5)
+            .toList();
+        return SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, i) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: RestaurantCard(restaurant: popular[i], horizontal: true),
+              ),
+              childCount: popular.length,
+            ),
+          ),
+        );
+      },
     );
   }
 }

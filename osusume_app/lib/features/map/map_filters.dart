@@ -3,6 +3,14 @@ import '../../core/models/restaurant.dart';
 enum MapFilter { all, openNow, easyForForeigners, budget, topRated }
 
 extension MapFilterLabel on MapFilter {
+  String? get filterKey => switch (this) {
+        MapFilter.all => null,
+        MapFilter.openNow => 'open_now',
+        MapFilter.easyForForeigners => 'easy',
+        MapFilter.budget => 'budget',
+        MapFilter.topRated => 'top_rated',
+      };
+
   String get label => switch (this) {
         MapFilter.all => 'All',
         MapFilter.openNow => 'Open now',

@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../core/models/restaurant.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -200,6 +202,32 @@ class RestaurantCard extends StatelessWidget {
   }
 
   Widget _buildImage({double? width, double? height}) {
+    final photoUrl = restaurant.photos.isNotEmpty
+        ? restaurant.photos.first.displayUrl
+        : restaurant.imageUrl;
+
+    if (photoUrl != null && photoUrl.isNotEmpty) {
+      return CachedNetworkImage(
+        imageUrl: photoUrl,
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+        placeholder: (_, __) => _shimmerPlaceholder(width: width, height: height),
+        errorWidget: (_, __, ___) => _fallbackPlaceholder(width: width, height: height),
+      );
+    }
+    return _fallbackPlaceholder(width: width, height: height);
+  }
+
+  Widget _shimmerPlaceholder({double? width, double? height}) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(width: width, height: height, color: Colors.white),
+    );
+  }
+
+  Widget _fallbackPlaceholder({double? width, double? height}) {
     return Container(
       width: width,
       height: height,
@@ -207,7 +235,6 @@ class RestaurantCard extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Placeholder gradient
           DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -221,14 +248,9 @@ class RestaurantCard extends StatelessWidget {
             ),
           ),
           Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  _cuisineEmoji(restaurant.cuisine),
-                  style: const TextStyle(fontSize: 32),
-                ),
-              ],
+            child: Text(
+              _cuisineEmoji(restaurant.cuisine),
+              style: const TextStyle(fontSize: 32),
             ),
           ),
         ],

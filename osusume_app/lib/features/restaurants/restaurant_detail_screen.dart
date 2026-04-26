@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../shared/widgets/ease_score_badge.dart';
 import '../../shared/widgets/osusume_tag.dart';
+import '../../shared/widgets/photo_gallery.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
   final Restaurant restaurant;
@@ -89,24 +90,30 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
         background: Stack(
           fit: StackFit.expand,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    AppColors.primary.withOpacity(0.2),
-                    AppColors.primary.withOpacity(0.05),
-                  ],
-                ),
-              ),
-            ),
-            Center(
-              child: Text(
-                _cuisineEmoji(r.cuisine),
-                style: const TextStyle(fontSize: 80),
-              ),
-            ),
+            r.photos.isNotEmpty
+                ? PhotoGallery(
+                    photos: r.photos,
+                    height: 280,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          AppColors.primary.withOpacity(0.2),
+                          AppColors.primary.withOpacity(0.05),
+                        ],
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        _cuisineEmoji(r.cuisine),
+                        style: const TextStyle(fontSize: 80),
+                      ),
+                    ),
+                  ),
             Positioned(
               bottom: 0,
               left: 0,
