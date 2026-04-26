@@ -1,0 +1,5 @@
+package com.osusume.osusume_app
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()

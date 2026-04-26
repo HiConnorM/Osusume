@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Expo / React Native (legacy frontend)
+osusume_frontend/node_modules/
+osusume_frontend/.expo/
+osusume_frontend/dist/
+osusume_frontend/.env
+
+# Backend
+osusume_backend/node_modules/
+osusume_backend/dist/
+osusume_backend/.env
+
+# Flutter build artifacts (tracked via osusume_app/.gitignore)
