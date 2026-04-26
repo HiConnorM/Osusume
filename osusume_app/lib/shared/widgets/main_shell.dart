@@ -7,11 +7,12 @@ class MainShell extends StatelessWidget {
 
   const MainShell({super.key, required this.child});
 
+  static const _routes = ['/home', '/map', '/saved', '/translate', '/profile'];
+
   int _locationToIndex(String location) {
-    if (location.startsWith('/home')) return 0;
-    if (location.startsWith('/saved')) return 1;
-    if (location.startsWith('/translate')) return 2;
-    if (location.startsWith('/profile')) return 3;
+    for (int i = 0; i < _routes.length; i++) {
+      if (location.startsWith(_routes[i])) return i;
+    }
     return 0;
   }
 
@@ -24,33 +25,21 @@ class MainShell extends StatelessWidget {
       body: child,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(color: AppColors.divider, width: 1),
-          ),
+          border: Border(top: BorderSide(color: AppColors.divider, width: 1)),
         ),
         child: BottomNavigationBar(
           currentIndex: currentIndex,
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                context.go('/home');
-                break;
-              case 1:
-                context.go('/saved');
-                break;
-              case 2:
-                context.go('/translate');
-                break;
-              case 3:
-                context.go('/profile');
-                break;
-            }
-          },
+          onTap: (index) => context.go(_routes[index]),
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.explore_outlined),
               activeIcon: Icon(Icons.explore),
               label: 'Discover',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map_outlined),
+              activeIcon: Icon(Icons.map),
+              label: 'Map',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bookmark_outline),

@@ -1,3 +1,5 @@
+import 'package:latlong2/latlong.dart';
+
 class Restaurant {
   final String id;
   final String nameEn;
@@ -15,6 +17,7 @@ class Restaurant {
   final String? description;
   final List<String> tags;
   final String? recommendationReason;
+  final LatLng location;
 
   const Restaurant({
     required this.id,
@@ -29,6 +32,7 @@ class Restaurant {
     required this.distanceKm,
     required this.isOpen,
     required this.foreignerFactors,
+    required this.location,
     this.imageUrl,
     this.description,
     this.tags = const [],
@@ -38,15 +42,13 @@ class Restaurant {
   String get priceString => '¥' * priceLevel;
 
   String get distanceString {
-    if (distanceKm < 1) {
-      return '${(distanceKm * 1000).round()}m';
-    }
+    if (distanceKm < 1) return '${(distanceKm * 1000).round()}m';
     return '${distanceKm.toStringAsFixed(1)}km';
   }
 
   String get walkTimeString {
     final minutes = (distanceKm * 12).round();
-    return '${minutes} min walk';
+    return '$minutes min walk';
   }
 }
 
@@ -63,9 +65,9 @@ class ForeignerFactors {
   final bool? halalOptions;
   final bool? soloFriendly;
   final bool? kidFriendly;
-  final int easeScore; // 0–100
-  final int touristTrapRisk; // 0–10
-  final int localGemScore; // 0–10
+  final int easeScore;
+  final int touristTrapRisk;
+  final int localGemScore;
 
   const ForeignerFactors({
     this.englishMenu,
@@ -86,7 +88,6 @@ class ForeignerFactors {
   });
 }
 
-// Mock data for prototype
 class MockRestaurants {
   static const List<Restaurant> all = [
     Restaurant(
@@ -104,6 +105,7 @@ class MockRestaurants {
       tags: ['Solo-friendly', 'No Japanese needed', 'Late night'],
       recommendationReason:
           'Perfect for solo travelers. You order via a form — zero Japanese needed. Famous tonkotsu broth, private booth seating.',
+      location: LatLng(35.6612, 139.6979),
       foreignerFactors: ForeignerFactors(
         englishMenu: true,
         englishStaff: false,
@@ -132,7 +134,8 @@ class MockRestaurants {
       isOpen: true,
       tags: ['Worth the reservation', 'Omakase', 'Special occasion'],
       recommendationReason:
-          'One of Tokyo\'s most celebrated sushi counters. Reservation required months in advance — hotel concierge recommended.',
+          'One of Tokyo\'s most celebrated sushi counters. Reservation required months in advance.',
+      location: LatLng(35.6598, 139.7274),
       foreignerFactors: ForeignerFactors(
         englishMenu: false,
         englishStaff: false,
@@ -148,8 +151,8 @@ class MockRestaurants {
     ),
     Restaurant(
       id: '3',
-      nameEn: 'Torikizoku',
-      nameJa: 'とりきぞく',
+      nameEn: 'Torikizoku Shinjuku',
+      nameJa: 'とりきぞく 新宿',
       cuisine: 'Yakitori',
       neighborhood: 'Shinjuku',
       address: '3-2-1 Shinjuku, Shinjuku-ku',
@@ -160,7 +163,8 @@ class MockRestaurants {
       isOpen: true,
       tags: ['Budget', 'Late night', 'Local favorite'],
       recommendationReason:
-          'Every skewer is ¥328. Lively izakaya energy, all-you-can-drink options. Pictured menu makes ordering easy.',
+          'Every skewer is ¥328. Lively izakaya energy, pictured menu makes ordering easy.',
+      location: LatLng(35.6896, 139.7006),
       foreignerFactors: ForeignerFactors(
         englishMenu: false,
         englishStaff: false,
@@ -188,7 +192,8 @@ class MockRestaurants {
       isOpen: true,
       tags: ['English menu', 'Card accepted', 'Instagrammable'],
       recommendationReason:
-          'Australian brunch favorite with full English menu and staff. Ricotta hotcakes are legendary. Easy for anyone.',
+          'Australian brunch favorite with full English menu and staff. Ricotta hotcakes are legendary.',
+      location: LatLng(35.6654, 139.7076),
       foreignerFactors: ForeignerFactors(
         englishMenu: true,
         englishStaff: true,
@@ -217,6 +222,7 @@ class MockRestaurants {
       tags: ['Vegan options', 'English menu', 'Modern'],
       recommendationReason:
           'Light yuzu shio ramen unlike anything else in Tokyo. Vegan broth available. English touch-screen ordering.',
+      location: LatLng(35.6692, 139.7038),
       foreignerFactors: ForeignerFactors(
         englishMenu: true,
         englishStaff: true,
@@ -232,6 +238,93 @@ class MockRestaurants {
         easeScore: 91,
         touristTrapRisk: 3,
         localGemScore: 7,
+      ),
+    ),
+    Restaurant(
+      id: '6',
+      nameEn: 'Tempura Kondo',
+      nameJa: '天ぷら近藤',
+      cuisine: 'Tempura',
+      neighborhood: 'Ginza',
+      address: '9-7-6 Ginza, Chuo-ku',
+      rating: 4.7,
+      reviewCount: 863,
+      priceLevel: 4,
+      distanceKm: 2.3,
+      isOpen: false,
+      tags: ['Special occasion', 'Counter dining', 'Reservation recommended'],
+      recommendationReason:
+          'Legendary vegetable tempura. The sweet potato is a revelation. Worth every yen.',
+      location: LatLng(35.6694, 139.7640),
+      foreignerFactors: ForeignerFactors(
+        englishMenu: true,
+        englishStaff: false,
+        cardPayment: true,
+        reservationRequired: true,
+        walkInFriendly: false,
+        soloFriendly: true,
+        allergyFriendly: true,
+        easeScore: 72,
+        touristTrapRisk: 2,
+        localGemScore: 9,
+      ),
+    ),
+    Restaurant(
+      id: '7',
+      nameEn: 'Gyukatsu Motomura',
+      nameJa: '牛かつもと村',
+      cuisine: 'Gyukatsu',
+      neighborhood: 'Shibuya',
+      address: '2-29-5 Dogenzaka, Shibuya-ku',
+      rating: 4.3,
+      reviewCount: 4102,
+      priceLevel: 2,
+      distanceKm: 0.6,
+      isOpen: true,
+      tags: ['Beef cutlet', 'Cook-it-yourself', 'Popular'],
+      recommendationReason:
+          'Rare beef cutlet you grill yourself on a personal stone. Photo menu, easy ordering, always a queue.',
+      location: LatLng(35.6583, 139.6972),
+      foreignerFactors: ForeignerFactors(
+        englishMenu: true,
+        englishStaff: false,
+        cardPayment: true,
+        reservationRequired: false,
+        walkInFriendly: true,
+        soloFriendly: true,
+        allergyFriendly: false,
+        easeScore: 84,
+        touristTrapRisk: 3,
+        localGemScore: 6,
+      ),
+    ),
+    Restaurant(
+      id: '8',
+      nameEn: 'Narisawa',
+      nameJa: 'ナリサワ',
+      cuisine: 'Innovative',
+      neighborhood: 'Minami-Aoyama',
+      address: '2-6-15 Minami-Aoyama, Minato-ku',
+      rating: 4.9,
+      reviewCount: 318,
+      priceLevel: 4,
+      distanceKm: 1.4,
+      isOpen: true,
+      tags: ['Michelin 2★', 'Tasting menu', 'Nature-inspired'],
+      recommendationReason:
+          'Consistently ranked among Asia\'s 50 Best. Chef Yoshihiro Narisawa\'s innovative Japanese cuisine.',
+      location: LatLng(35.6636, 139.7175),
+      foreignerFactors: ForeignerFactors(
+        englishMenu: true,
+        englishStaff: true,
+        cardPayment: true,
+        reservationRequired: true,
+        walkInFriendly: false,
+        soloFriendly: false,
+        allergyFriendly: true,
+        easeScore: 80,
+        touristTrapRisk: 1,
+        localGemScore: 10,
       ),
     ),
   ];

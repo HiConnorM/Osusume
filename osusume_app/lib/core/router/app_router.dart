@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/splash/splash_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/home/home_screen.dart';
+import '../../features/map/map_screen.dart';
 import '../../features/recommendations/recommendation_screen.dart';
 import '../../features/restaurants/restaurant_detail_screen.dart';
 import '../../features/menu_translation/menu_translation_screen.dart';
@@ -21,41 +22,45 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/splash',
-      builder: (context, state) => const SplashScreen(),
+      builder: (_, __) => const SplashScreen(),
     ),
     GoRoute(
       path: '/onboarding',
-      builder: (context, state) => const OnboardingScreen(),
+      builder: (_, __) => const OnboardingScreen(),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
-      builder: (context, state, child) => MainShell(child: child),
+      builder: (_, __, child) => MainShell(child: child),
       routes: [
         GoRoute(
           path: '/home',
-          builder: (context, state) => const HomeScreen(),
+          builder: (_, __) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: '/map',
+          builder: (_, __) => const MapScreen(),
         ),
         GoRoute(
           path: '/saved',
-          builder: (context, state) => const SavedScreen(),
+          builder: (_, __) => const SavedScreen(),
         ),
         GoRoute(
           path: '/translate',
-          builder: (context, state) => const MenuTranslationScreen(),
+          builder: (_, __) => const MenuTranslationScreen(),
         ),
         GoRoute(
           path: '/profile',
-          builder: (context, state) => const ProfileScreen(),
+          builder: (_, __) => const ProfileScreen(),
         ),
       ],
     ),
     GoRoute(
       path: '/recommend',
-      builder: (context, state) => const RecommendationScreen(),
+      builder: (_, __) => const RecommendationScreen(),
     ),
     GoRoute(
       path: '/restaurant/:id',
-      builder: (context, state) {
+      builder: (_, state) {
         final id = state.pathParameters['id']!;
         final restaurant = MockRestaurants.all.firstWhere(
           (r) => r.id == id,
@@ -66,7 +71,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/reserve/:id',
-      builder: (context, state) {
+      builder: (_, state) {
         final id = state.pathParameters['id']!;
         final restaurant = MockRestaurants.all.firstWhere(
           (r) => r.id == id,
