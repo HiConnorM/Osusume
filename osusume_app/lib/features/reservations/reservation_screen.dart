@@ -33,9 +33,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
   String get _generatedMessage => '''
 予約のお願いがあります。
 
-${_formatDate(_date)}の${_time}に${_partySize}名でご予約をお願いできますでしょうか。
+${_formatDate(_date)}の$_timeに$_partySize名でご予約をお願いできますでしょうか。
 
-${_allergies.isNotEmpty ? '※食物アレルギーがございます：${_allergies.join('、')}。対応していただけますか？\n' : ''}${_notes.isNotEmpty ? '※${_notes}\n' : ''}
+${_allergies.isNotEmpty ? '※食物アレルギーがございます：${_allergies.join('、')}。対応していただけますか？\n' : ''}${_notes.isNotEmpty ? '※$_notes\n' : ''}
 よろしくお願いいたします。
 ''';
 
@@ -105,7 +105,7 @@ Thank you very much.
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
@@ -254,7 +254,7 @@ Thank you very much.
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: selected
-                        ? AppColors.warning.withOpacity(0.1)
+                        ? AppColors.warning.withValues(alpha: 0.1)
                         : AppColors.surface,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(

@@ -103,7 +103,7 @@ class _MapScreenState extends ConsumerState<MapScreen> with TickerProviderStateM
     _showRestaurantSheet(restaurant);
   }
 
-  void _onMapTap(TapPosition _, LatLng __) {
+  void _onMapTap(TapPosition _, LatLng _) {
     if (_selectedRestaurantId != null) {
       setState(() => _selectedRestaurantId = null);
     }

@@ -22,41 +22,41 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/splash',
-      builder: (_, __) => const SplashScreen(),
+      builder: (_, _) =>const SplashScreen(),
     ),
     GoRoute(
       path: '/onboarding',
-      builder: (_, __) => const OnboardingScreen(),
+      builder: (_, _) =>const OnboardingScreen(),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
-      builder: (_, __, child) => MainShell(child: child),
+      builder: (_, _, child) => MainShell(child: child),
       routes: [
         GoRoute(
           path: '/home',
-          builder: (_, __) => const HomeScreen(),
+          builder: (_, _) =>const HomeScreen(),
         ),
         GoRoute(
           path: '/map',
-          builder: (_, __) => const MapScreen(),
+          builder: (_, _) =>const MapScreen(),
         ),
         GoRoute(
           path: '/saved',
-          builder: (_, __) => const SavedScreen(),
+          builder: (_, _) =>const SavedScreen(),
         ),
         GoRoute(
           path: '/translate',
-          builder: (_, __) => const MenuTranslationScreen(),
+          builder: (_, _) =>const MenuTranslationScreen(),
         ),
         GoRoute(
           path: '/profile',
-          builder: (_, __) => const ProfileScreen(),
+          builder: (_, _) =>const ProfileScreen(),
         ),
       ],
     ),
     GoRoute(
       path: '/recommend',
-      builder: (_, __) => const RecommendationScreen(),
+      builder: (_, _) =>const RecommendationScreen(),
     ),
     GoRoute(
       path: '/restaurant/:id',

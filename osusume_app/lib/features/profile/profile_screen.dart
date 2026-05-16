@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
                     trailing: Switch(
                       value: true,
                       onChanged: (_) {},
-                      activeColor: AppColors.primary,
+                      activeThumbColor: AppColors.primary,
                     ),
                   ),
                   _SettingsRow(
@@ -130,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.12),
+                        color: AppColors.primary.withValues(alpha: 0.12),
                         shape: BoxShape.circle,
                       ),
                       child: const Center(
@@ -345,7 +345,7 @@ class _PremiumCard extends StatelessWidget {
           Text(
             'Unlimited translations · Full AI recommendations · Trip planner · Allergy cards',
             style: AppTextStyles.bodySmall.copyWith(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
           const SizedBox(height: 14),
@@ -366,7 +366,7 @@ class _PremiumCard extends StatelessWidget {
               Text(
                 '\$5.99/mo after',
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withValues(alpha: 0.8),
                 ),
               ),
             ],

@@ -28,9 +28,9 @@ class EaseScoreBadge extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: _color.withOpacity(0.12),
+          color: _color.withValues(alpha:0.12),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _color.withOpacity(0.3)),
+          border: Border.all(color: _color.withValues(alpha:0.3)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -50,7 +50,7 @@ class EaseScoreBadge extends StatelessWidget {
               children: [
                 Text(
                   'Foreigner Ease',
-                  style: AppTextStyles.caption.copyWith(color: _color.withOpacity(0.8)),
+                  style: AppTextStyles.caption.copyWith(color: _color.withValues(alpha:0.8)),
                 ),
                 Text(
                   '$score / 100 · $_label',
@@ -66,7 +66,7 @@ class EaseScoreBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.12),
+        color: _color.withValues(alpha:0.12),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(

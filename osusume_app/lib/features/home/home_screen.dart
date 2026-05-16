@@ -235,9 +235,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
+          color: color.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withOpacity(0.15)),
+          border: Border.all(color: color.withValues(alpha: 0.15)),
         ),
         child: Row(
           children: [
@@ -287,7 +287,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         height: 270,
         child: Center(child: CircularProgressIndicator()),
       ),
-      error: (_, __) => const SizedBox(
+      error: (_, _) => const SizedBox(
         height: 270,
         child: Center(child: Text('Could not load restaurants')),
       ),
@@ -323,7 +323,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final nearby = ref.watch(nearbyRestaurantsProvider);
     return nearby.when(
       loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-      error: (_, __) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+      error: (_, _) => const SliverToBoxAdapter(child: SizedBox.shrink()),
       data: (restaurants) {
         final popular = (restaurants.toList()
               ..sort((a, b) => b.rating.compareTo(a.rating)))
@@ -374,7 +374,7 @@ class _QuickActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: action.color.withOpacity(0.1),
+          color: action.color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Column(

@@ -89,8 +89,8 @@ class _PhotoTile extends StatelessWidget {
       imageUrl: photo.displayUrl,
       fit: fit,
       width: double.infinity,
-      placeholder: (_, __) => _shimmer(),
-      errorWidget: (_, __, ___) => _errorBox(),
+      placeholder: (_, _) => _shimmer(),
+      errorWidget: (_, _, _) => _errorBox(),
     );
   }
 
@@ -123,8 +123,8 @@ class _Placeholder extends StatelessWidget {
         height: height,
         width: double.infinity,
         fit: fit,
-        placeholder: (_, __) => _shimmerBox(),
-        errorWidget: (_, __, ___) => _emptyBox(),
+        placeholder: (_, _) => _shimmerBox(),
+        errorWidget: (_, _, _) => _emptyBox(),
       );
     }
     return _emptyBox();

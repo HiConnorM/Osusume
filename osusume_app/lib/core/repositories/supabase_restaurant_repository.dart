@@ -45,7 +45,7 @@ class SupabaseRestaurantRepository implements RestaurantRepository {
     final remote = RestaurantRemoteModel.fromJson({
       ...restaurantJson,
       'photos': photosJson,
-      if (ffJson != null) 'foreignerFactors': ffJson,
+      'foreignerFactors': ?ffJson,
     });
 
     return remote.toRestaurant();

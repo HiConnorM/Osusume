@@ -163,7 +163,7 @@ class _MenuTranslationScreenState extends State<MenuTranslationScreen> {
                     Text(
                       '8 dishes found · 2 allergen warnings',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.tagGreenText.withOpacity(0.8),
+                        color: AppColors.tagGreenText.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -186,9 +186,9 @@ class _MenuTranslationScreenState extends State<MenuTranslationScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.06),
+            color: AppColors.primary.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,7 +341,7 @@ class _DishCard extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: hasAllergen ? AppColors.warning.withOpacity(0.3) : AppColors.divider,
+          color: hasAllergen ? AppColors.warning.withValues(alpha: 0.3) : AppColors.divider,
         ),
       ),
       child: Column(
@@ -380,7 +380,7 @@ class _DishCard extends StatelessWidget {
                     AppColors.tagOrange,
                   ),
                 ...dish.allergens.map(
-                  (a) => _chip('⚠️ $a', AppColors.warning, AppColors.warning.withOpacity(0.12)),
+                  (a) => _chip('⚠️ $a', AppColors.warning, AppColors.warning.withValues(alpha: 0.12)),
                 ),
               ],
             ),

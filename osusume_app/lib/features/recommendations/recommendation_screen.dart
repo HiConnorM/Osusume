@@ -131,8 +131,8 @@ class _RecommendationScreenState extends State<RecommendationScreen>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary.withOpacity(0.18),
-            AppColors.primary.withOpacity(0.06),
+            AppColors.primary.withValues(alpha: 0.18),
+            AppColors.primary.withValues(alpha: 0.06),
           ],
         ),
       ),
@@ -162,7 +162,7 @@ class _RecommendationScreenState extends State<RecommendationScreen>
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black.withOpacity(0.55),
+                    Colors.black.withValues(alpha: 0.55),
                     Colors.transparent,
                   ],
                 ),
@@ -189,7 +189,7 @@ class _RecommendationScreenState extends State<RecommendationScreen>
                   Text(
                     r.nameJa,
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: Colors.white.withOpacity(0.75),
+                      color: Colors.white.withValues(alpha: 0.75),
                     ),
                   ),
                 ],
@@ -235,9 +235,9 @@ class _RecommendationScreenState extends State<RecommendationScreen>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.06),
+        color: AppColors.primary.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

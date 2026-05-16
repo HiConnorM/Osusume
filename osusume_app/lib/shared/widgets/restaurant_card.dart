@@ -43,10 +43,10 @@ class RestaurantCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            child: _buildImage(height: 160),
+            child: _buildImage(height: 156),
           ),
           Padding(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -66,9 +66,13 @@ class RestaurantCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text(
-                      restaurant.cuisine,
-                      style: AppTextStyles.bodySmall,
+                    Flexible(
+                      child: Text(
+                        restaurant.cuisine,
+                        style: AppTextStyles.bodySmall,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     const Text(' · ', style: TextStyle(color: AppColors.textTertiary)),
                     Text(
@@ -169,6 +173,8 @@ class RestaurantCard extends StatelessWidget {
                   Text(
                     '${restaurant.cuisine} · ${restaurant.priceString}',
                     style: AppTextStyles.bodySmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -212,8 +218,8 @@ class RestaurantCard extends StatelessWidget {
         width: width,
         height: height,
         fit: BoxFit.cover,
-        placeholder: (_, __) => _shimmerPlaceholder(width: width, height: height),
-        errorWidget: (_, __, ___) => _fallbackPlaceholder(width: width, height: height),
+        placeholder: (_, _) => _shimmerPlaceholder(width: width, height: height),
+        errorWidget: (_, _, _) => _fallbackPlaceholder(width: width, height: height),
       );
     }
     return _fallbackPlaceholder(width: width, height: height);
@@ -241,8 +247,8 @@ class RestaurantCard extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.primary.withOpacity(0.15),
-                  AppColors.primary.withOpacity(0.05),
+                  AppColors.primary.withValues(alpha: 0.15),
+                  AppColors.primary.withValues(alpha: 0.05),
                 ],
               ),
             ),
